@@ -9,7 +9,7 @@ WORKDIR /builder/terratest
 
 RUN apt-get update
 RUN apt-get -y install unzip wget curl ca-certificates
-RUN curl -o terraform_linux_amd64.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+RUN curl --location --output terraform_linux_amd64.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN echo "${TERRAFORM_VERSION_SHA256SUM} terraform_linux_amd64.zip" > terraform_SHA256SUMS
 RUN sha256sum -c terraform_SHA256SUMS --status
 RUN unzip terraform_linux_amd64.zip -d /builder/terratest
@@ -19,7 +19,8 @@ RUN curl -o /builder/terratest/terratest_log_parser https://github.com/gruntwork
 FROM golang:1.14.6-alpine3.11
 LABEL MAINTAINER labz@btower.net
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git curl
+RUN apk add --no-cache build-base gcc abuild binutils binutils-doc gcc-doc
 
 RUN go get -u golang.org/x/lint/golint
 RUN go get -v golang.org/x/tools/cmd/godoc
