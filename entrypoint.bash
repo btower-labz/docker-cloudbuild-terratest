@@ -46,5 +46,5 @@ elif [[ (-z "$active_account") &&  (-z "$GCLOUD_SERVICE_KEY") ]]; then
   service-account-usage
 fi
 
-echo "Running: terraform $@"
-terraform "$@"
+echo "Running: $@"
+exec "$@"

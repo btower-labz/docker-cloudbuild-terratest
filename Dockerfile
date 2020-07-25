@@ -20,15 +20,17 @@ RUN curl --location --silent --fail --show-error --output /builder/terratest/ter
 FROM golang:1.14.6-alpine3.11
 LABEL MAINTAINER labz@btower.net
 
-RUN apk add --no-cache git curl
+RUN apk add --no-cache git curl wget
 RUN apk add --no-cache build-base gcc abuild binutils
-
-ENV PATH=/builder/terratest/:$PATH
+RUN apk add --no-cache bash
+RUN apk add --no-cache python3
 
 #RUN go get -u golang.org/x/lint/golint
 #RUN go get -v golang.org/x/tools/cmd/godoc
 
 WORKDIR /builder/terratest
+ENV PATH=/builder/terratest/:${PATH}
+
 COPY --from=builder /builder/terratest/terraform ./
 RUN chmod +x ./terraform
 RUN terraform version
@@ -37,5 +39,11 @@ COPY --from=builder /builder/terratest/terratest_log_parser ./
 RUN chmod +x ./terratest_log_parser
 RUN terratest_log_parser --version
 
+ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH=/usr/local/gcloud/google-cloud-sdk/bin:${PATH}
+RUN gcloud --version
+
 COPY entrypoint.bash /builder/entrypoint.bash
 ENTRYPOINT ["/builder/entrypoint.bash"]
+CMD ["terraform","version"]
