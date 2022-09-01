@@ -1,9 +1,9 @@
 FROM gcr.io/cloud-builders/gcloud as builder
 LABEL MAINTAINER labz@btower.net
 
-ARG TERRAFORM_VERSION=1.0.8
-ARG TERRAFORM_VERSION_SHA256SUM=a73459d406067ce40a46f026dce610740d368c3b4a3d96591b10c7a577984c2e
-ARG TERRATEST_LOG_PARSER_VERSION=v0.13.13
+ARG TERRAFORM_VERSION=1.2.8
+ARG TERRAFORM_VERSION_SHA256SUM=3e9c46d6f37338e90d5018c156d89961b0ffb0f355249679593aff99f9abe2a2
+ARG TERRATEST_LOG_PARSER_VERSION=v0.40.20
 
 WORKDIR /builder/terratest
 
@@ -17,7 +17,8 @@ RUN unzip terraform_linux_amd64.zip -d /builder/terratest
 
 RUN curl --location --silent --fail --show-error --output /builder/terratest/terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/${TERRATEST_LOG_PARSER_VERSION}/terratest_log_parser_linux_amd64
 
-FROM golang:1.14.6-alpine3.11
+FROM golang:1.19.0-alpine3.16
+
 LABEL MAINTAINER labz@btower.net
 
 RUN apk add --no-cache git curl wget
