@@ -37,7 +37,7 @@ RUN terraform version
 
 COPY --from=builder /builder/terratest/terratest_log_parser ./
 RUN chmod +x ./terratest_log_parser
-RUN terratest_log_parser --version
+# RUN terratest_log_parser --version
 
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
 RUN curl -sSL https://sdk.cloud.google.com | bash
@@ -47,4 +47,3 @@ RUN gcloud --version
 COPY entrypoint.bash /builder/entrypoint.bash
 ENTRYPOINT ["/builder/entrypoint.bash"]
 CMD ["terraform","version"]
-
