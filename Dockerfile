@@ -1,9 +1,9 @@
 FROM gcr.io/cloud-builders/gcloud as builder
 LABEL MAINTAINER labz@btower.net
 
-ARG TERRAFORM_VERSION=1.0.8
-ARG TERRAFORM_VERSION_SHA256SUM=a73459d406067ce40a46f026dce610740d368c3b4a3d96591b10c7a577984c2e
-ARG TERRATEST_LOG_PARSER_VERSION=v0.13.13
+ARG TERRAFORM_VERSION=1.10.5
+ARG TERRAFORM_VERSION_SHA256SUM=0566a24f5332098b15716ebc394be503f4094acba5ba529bf5eb0698ed5e2a90
+ARG TERRATEST_LOG_PARSER_VERSION=v0.48.2
 
 WORKDIR /builder/terratest
 
@@ -37,7 +37,7 @@ RUN terraform version
 
 COPY --from=builder /builder/terratest/terratest_log_parser ./
 RUN chmod +x ./terratest_log_parser
-RUN terratest_log_parser --version
+# RUN terratest_log_parser --version
 
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
 RUN curl -sSL https://sdk.cloud.google.com | bash
