@@ -47,3 +47,4 @@ RUN gcloud --version
 COPY entrypoint.bash /builder/entrypoint.bash
 ENTRYPOINT ["/builder/entrypoint.bash"]
 CMD ["terraform","version"]
+
